@@ -1,0 +1,17 @@
+{
+  "name": "gitlab-discord-bot",
+  "version": "0.1.0",
+  "description": "Webhook Transformer that parses gitlab webhooks and forwards them to discord",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "gitlab",
+    "discord",
+    "express",
+    "webhook"
+  ],
+  "author": "Srinivas Dhanwada <dhanwads@gmail.com>",
+  "license": "MIT"
+}
