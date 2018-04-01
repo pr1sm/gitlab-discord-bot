@@ -40,7 +40,7 @@ app.post('/webhook', function(req, res) {
     var forwardData = {
         content: "gitlab sent a message!",
         username: "custom-username",
-        avatar_url: `${req.headers.host}/images/gitlab-logo.png`,
+        avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
         tts: false
     }
 
