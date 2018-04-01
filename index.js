@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 
+const PORT = process.env.PORT || 5000;
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -17,4 +19,4 @@ app.post('/webhook', function(req, res) {
     res.send('OK');
 });
 
-app.listen(8100, () => console.log('Gitlab Discord Transformer listening on port 8100!'));
+app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port ${PORT}`));
