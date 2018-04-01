@@ -54,7 +54,8 @@ app.post('/webhook', function(req, res) {
         body: forwardData
     }, function(error, resp, body) {
         console.log('Discord Response');
-        console.log(resp);
+        console.log(error);
+        console.log(body);
     })
 
     res.status(200);
