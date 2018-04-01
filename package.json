@@ -13,5 +13,10 @@
     "webhook"
   ],
   "author": "Srinivas Dhanwada <dhanwads@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mongodb": "^3.0.5"
+  }
 }
