@@ -17,7 +17,8 @@
   "dependencies": {
     "body-parser": "^1.18.2",
     "express": "^4.16.3",
-    "mongodb": "^3.0.5"
+    "mongodb": "^3.0.5",
+    "request": "^2.85.0"
   },
   "engines": {
     "node": "9.10.1"
