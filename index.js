@@ -14,7 +14,10 @@ app.get('/webhook', function(req, res) {
 });
 
 app.post('/webhook', function(req, res) {
-    console.log(req);
+    console.log('Headers: ');
+    console.log(req.headers);
+    console.log('Body: ');
+    console.log(req.body);
     res.status(200);
     res.send('OK');
 });
