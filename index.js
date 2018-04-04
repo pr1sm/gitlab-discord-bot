@@ -78,7 +78,7 @@ function transformData(type, host, body) {
         var content_str = `${body.user_username} pushed to branch [${branch}](${body.project.web_url}/commits/${branch}) of [${body.project.name}](${body.project.web_url}) ([Compare Changes](${body.project.web_url}/compare/${body.before}...${body.after}))`
         var embed_msg = '';
         body.commits.forEach(function(commit) {
-            embed_msg += `[${commit.id.substring(0, 7)}](${commit.url}) by ${commit.author.name}\n${commit.message}\n\n`;
+            embed_msg += `[${commit.id.substring(0, 7)}](${commit.url}) by ${commit.author.name}\n${transformGitlabSpecificLinks(commit.message, body.project.path_with_namespace, body.project.web_url)}\n\n`;
         });
         embeds = [
             {
@@ -117,4 +117,12 @@ function transformData(type, host, body) {
 
 function transformRef(ref) {
     return ref.replace(/refs\/heads\//, '');
+}
+
+function transformGitlabSpecificLinks(message, path, web_url) {
+    var issue_regex = new RegExp('' + path + '#(\d)+');
+    var merge_request_regex = new RegExp('' + path + '!(\d)+');
+    return message
+        .replace(issue_regex, `[#$1](${web_url}/issues/$1)`)
+        .replace(merge_request_regex, `[!$1](${web_url}/merge_requests/$1)`)
 }
