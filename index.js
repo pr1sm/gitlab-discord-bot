@@ -74,14 +74,11 @@ app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port
 function transformData(type, host, body) {
     var forwardData = null;
     if(type === 'Push Hook') {
-        // 'https://git.ece.iastate.edu/sd/sdmay18-09'
-        // 'https://git.ece.iastate.edu/sd/sdmay18-09/compare/4c49fcd9aab890a0563752363bab69031436c456...4f52b4d4e9da834ce238330ff965ffd9c37ef07a'
-        // 'https://git.ece.iastate.edu/sd/sdmay18-09/commits/issue_5'
-        var content_str = `${body.user_username} pushed to branch ${body.ref} of ${body.project.name} (compare changes)`
+        var branch = transformRef(body.ref);
+        var content_str = `${body.user_username} pushed to branch [${branch}](${body.project.web_url}/commits/${branch}) of [${body.project.name}](${body.project.web_url}) ([Compare Changes](${body.project.web_url}/compare/${body.before}...${body.after}))`
         var embed_msg = '';
-        console.log(body.commits);
         body.commits.forEach(function(commit) {
-            embed_msg += `${commit.id} by ${commit.author.name}\n${commit.message}\n\n`;
+            embed_msg += `[${commit.id.substring(0, 7)}](${commit.url}) by ${commit.author.name}\n${commit.message}\n\n`;
         });
         embeds = [
             {
@@ -116,4 +113,8 @@ function transformData(type, host, body) {
     }
 
     return forwardData;
+}
+
+function transformRef(ref) {
+    return ref.replace(/refs\/heads\//, '');
 }
