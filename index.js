@@ -15,9 +15,19 @@ app.get('/webhook', function(req, res) {
 
     var forwardData = {
         content: "gitlab sent a message!",
-        username: "custom-username",
-        avatar_url: `${req.headers.host}/images/gitlab-logo.png`,
-        tts: false
+        username: "gitlab-bot",
+        avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
+        tts: false,
+        embeds: [
+            {
+                title: "Embedded Message",
+                description: "Gitlab event",
+                type: "rich",
+                footer: {
+                    text: "footer text",
+                }
+            },
+        ]
     }
 
     console.log('Forward Data:');
@@ -25,6 +35,7 @@ app.get('/webhook', function(req, res) {
 
     res.status(200);
     res.send('Hello World!');
+    res.end();
 });
 
 app.get('/images/gitlab-logo.png', function(req, res) {
@@ -39,13 +50,27 @@ app.post('/webhook', function(req, res) {
 
     var forwardData = {
         content: "gitlab sent a message!",
-        username: "custom-username",
+        username: "gitlab-bot",
         avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
-        tts: false
+        tts: false,
+        embeds: [
+            {
+                title: "Embedded Message",
+                description: "Gitlab event",
+                type: "rich",
+                footer: {
+                    text: "footer text",
+                }
+            },
+        ]
     }
 
     console.log('Forward Data:');
     console.log(forwardData);
+
+    res.status(200);
+    res.send('OK');
+    res.end();
 
     request({
         url: 'https://discordapp.com/api/webhooks/429916549017763841/-3yqpx7q_5WQV2WmLRJD50HaE5KblxZH7nU93PsTw3PMPQ6kmV0i2bIFOT0bHOsjQDMz',
@@ -56,10 +81,7 @@ app.post('/webhook', function(req, res) {
         console.log('Discord Response');
         console.log(error);
         console.log(body);
-    })
-
-    res.status(200);
-    res.send('OK');
+    });
 });
 
 app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port ${PORT}`));
