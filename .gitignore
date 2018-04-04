@@ -1,3 +1,6 @@
+# Temp data
+tmp/
+
 # Logs
 logs
 *.log

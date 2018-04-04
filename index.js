@@ -43,10 +43,10 @@ app.get('/images/gitlab-logo.png', function(req, res) {
 });
 
 app.post('/webhook', function(req, res) {
-    console.log('Headers: ');
-    console.log(req.headers);
-    console.log('Body: ');
-    console.log(req.body);
+    // console.log('Headers: ');
+    // console.log(req.headers);
+    // console.log('Body: ');
+    // console.log(req.body);
 
     var forwardData = transformData(req.headers['x-gitlab-event'], req.headers.host, req.body);
 
@@ -73,7 +73,7 @@ app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port
 
 function transformData(type, host, body) {
     var forwardData = null;
-    if(type === 'Push Hook') {
+    if(type === 'Push Hook' || type === 'Tag Push Hook') {
         var branch = transformRef(body.ref);
         var content_str = `${body.user_username} pushed to branch [${branch}](${body.project.web_url}/commits/${branch}) of [${body.project.name}](${body.project.web_url}) ([Compare Changes](${body.project.web_url}/compare/${body.before}...${body.after}))`
         var embed_msg = '';
