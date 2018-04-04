@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({
 app.get('/webhook', function(req, res) {
 
     var forwardData = {
-        content: "gitlab sent a message!",
+        content: "Sending a test message!",
         username: "gitlab-bot",
         avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
         tts: false,
@@ -48,22 +48,7 @@ app.post('/webhook', function(req, res) {
     console.log('Body: ');
     console.log(req.body);
 
-    var forwardData = {
-        content: "gitlab sent a message!",
-        username: "gitlab-bot",
-        avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
-        tts: false,
-        embeds: [
-            {
-                title: "Embedded Message",
-                description: "Gitlab event",
-                type: "rich",
-                footer: {
-                    text: "footer text",
-                }
-            },
-        ]
-    }
+    var forwardData = transformData(req.header['x-gitlab-event'], req.body);
 
     console.log('Forward Data:');
     console.log(forwardData);
@@ -85,3 +70,49 @@ app.post('/webhook', function(req, res) {
 });
 
 app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port ${PORT}`));
+
+function transformData(type, body) {
+    var forwardData = null;
+    if(type === 'Push Hook') {
+        // 'https://git.ece.iastate.edu/sd/sdmay18-09'
+        // 'https://git.ece.iastate.edu/sd/sdmay18-09/compare/4c49fcd9aab890a0563752363bab69031436c456...4f52b4d4e9da834ce238330ff965ffd9c37ef07a'
+        // 'https://git.ece.iastate.edu/sd/sdmay18-09/commits/issue_5'
+        var content_str = `${body.user_username} pushed to branch ${body.ref} of ${body.project.name} (compare changes)`
+        var embed_msg = '';
+        for(var commit in body.project.commits) {
+            embed_msg += `${commit.id} by <author>\n${commit.message}\n\n`;
+        }
+        embeds = [
+            {
+                description: embed_msg,
+                type: 'rich',
+            }
+        ];
+        forwardData = {
+            content: content_str,
+            username: 'gitlab-bot',
+            avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
+            tts: false,
+            embeds: embeds
+        }
+    } else {
+        forwardData = {
+            content: "gitlab sent a message!",
+            username: "gitlab-bot",
+            avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
+            tts: false,
+            embeds: [
+                {
+                    title: "Embedded Message",
+                    description: "Gitlab event",
+                    type: "rich",
+                    footer: {
+                        text: "footer text",
+                    }
+                },
+            ]
+        }
+    }
+
+    return forwardData;
+}
