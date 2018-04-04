@@ -80,9 +80,9 @@ function transformData(type, host, body) {
         var content_str = `${body.user_username} pushed to branch ${body.ref} of ${body.project.name} (compare changes)`
         var embed_msg = '';
         console.log(body.commits);
-        for(var commit in body.commits) {
-            embed_msg += `${commit.id} by <author>\n${commit.message}\n\n`;
-        }
+        body.commits.forEach(function(commit) {
+            embed_msg += `${commit.id} by ${commit.author.name}\n${commit.message}\n\n`;
+        });
         embeds = [
             {
                 description: embed_msg,
