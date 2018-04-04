@@ -43,14 +43,14 @@ app.get('/images/gitlab-logo.png', function(req, res) {
 });
 
 app.post('/webhook', function(req, res) {
-    console.log('Headers: ');
-    console.log(req.headers);
-    console.log('Body: ');
-    console.log(req.body);
+    // console.log('Headers: ');
+    // console.log(req.headers);
+    // console.log('Body: ');
+    // console.log(req.body);
 
-    var forwardData = transformData(req.header['x-gitlab-event'], req.headers.host, req.body);
+    var forwardData = transformData(req.headers['x-gitlab-event'], req.headers.host, req.body);
 
-    console.log('Forward Data:');
+    console.log(`Forward Data for type: ${req.headers['x-gitlab-event']}`);
     console.log(forwardData);
 
     res.status(200);
@@ -63,9 +63,9 @@ app.post('/webhook', function(req, res) {
         json: true,
         body: forwardData
     }, function(error, resp, body) {
-        console.log('Discord Response');
-        console.log(error);
-        console.log(body);
+        // console.log('Discord Response');
+        // console.log(error);
+        // console.log(body);
     });
 });
 
@@ -79,7 +79,8 @@ function transformData(type, host, body) {
         // 'https://git.ece.iastate.edu/sd/sdmay18-09/commits/issue_5'
         var content_str = `${body.user_username} pushed to branch ${body.ref} of ${body.project.name} (compare changes)`
         var embed_msg = '';
-        for(var commit in body.project.commits) {
+        console.log(body.commits);
+        for(var commit in body.commits) {
             embed_msg += `${commit.id} by <author>\n${commit.message}\n\n`;
         }
         embeds = [
