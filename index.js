@@ -48,7 +48,7 @@ app.post('/webhook', function(req, res) {
     console.log('Body: ');
     console.log(req.body);
 
-    var forwardData = transformData(req.header['x-gitlab-event'], req.body);
+    var forwardData = transformData(req.header['x-gitlab-event'], req.headers.host, req.body);
 
     console.log('Forward Data:');
     console.log(forwardData);
@@ -71,7 +71,7 @@ app.post('/webhook', function(req, res) {
 
 app.listen(PORT, () => console.log(`Gitlab Discord Transformer listening on port ${PORT}`));
 
-function transformData(type, body) {
+function transformData(type, host, body) {
     var forwardData = null;
     if(type === 'Push Hook') {
         // 'https://git.ece.iastate.edu/sd/sdmay18-09'
@@ -91,7 +91,7 @@ function transformData(type, body) {
         forwardData = {
             content: content_str,
             username: 'gitlab-bot',
-            avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
+            avatar_url: `https://${host}/images/gitlab-logo.png`,
             tts: false,
             embeds: embeds
         }
@@ -99,7 +99,7 @@ function transformData(type, body) {
         forwardData = {
             content: "gitlab sent a message!",
             username: "gitlab-bot",
-            avatar_url: `https://${req.headers.host}/images/gitlab-logo.png`,
+            avatar_url: `https://${host}/images/gitlab-logo.png`,
             tts: false,
             embeds: [
                 {
