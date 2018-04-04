@@ -43,10 +43,10 @@ app.get('/images/gitlab-logo.png', function(req, res) {
 });
 
 app.post('/webhook', function(req, res) {
-    // console.log('Headers: ');
-    // console.log(req.headers);
-    // console.log('Body: ');
-    // console.log(req.body);
+    console.log('Headers: ');
+    console.log(req.headers);
+    console.log('Body: ');
+    console.log(req.body);
 
     var forwardData = transformData(req.headers['x-gitlab-event'], req.headers.host, req.body);
 
