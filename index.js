@@ -120,8 +120,8 @@ function transformRef(ref) {
 }
 
 function transformGitlabSpecificLinks(message, path, web_url) {
-    var issue_regex = new RegExp('' + path + '#(\d)+');
-    var merge_request_regex = new RegExp('' + path + '!(\d)+');
+    var issue_regex = new RegExp('' + path + '#(\\d)+', 'g');
+    var merge_request_regex = new RegExp('' + path + '!(\\d+)', 'g');
     return message
         .replace(issue_regex, `[#$1](${web_url}/issues/$1)`)
         .replace(merge_request_regex, `[!$1](${web_url}/merge_requests/$1)`)
