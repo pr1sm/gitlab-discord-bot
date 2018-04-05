@@ -96,9 +96,10 @@ function transformData(type, host, body) {
             embeds: embeds
         }
     } else if(type === 'Merge Request Hook') {
-        var content_str = `${body.user.username} ${body.object_attributes.state} [!${body.object_attributes.id}](${body.object_attributes.url})`;
-        var embed_title = `${body.object_attributes.title}`
-        var embed_msg = `Merging branch ${body.object_attributes.source_branch} into ${body.object_attributes.target_branch}`
+        var content_str = `${body.user.username} ${body.object_attributes.state} [!${body.object_attributes.iid}](${body.object_attributes.url}) of [${body.project.name}](${body.project.web_url})`;
+        var embed_title = `${body.object_attributes.title}`;
+        var embed_msg = `${body.object_attributes.description}`;
+        var embed_footer = `${body.object_attributes.source_branch} into ${body.object_attributes.target_branch}`
 
         forwardData = {
           content: content_str,
@@ -109,6 +110,9 @@ function transformData(type, host, body) {
             {
               title: embed_title,
               description: embed_msg,
+              footer: {
+                text: embed_footer
+              },
               type: 'rich'
             }
           ]
