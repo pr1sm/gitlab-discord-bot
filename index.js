@@ -95,6 +95,24 @@ function transformData(type, host, body) {
             tts: false,
             embeds: embeds
         }
+    } else if(type === 'Merge Request Hook') {
+        var content_str = `${body.user.username} ${body.object_attributes.state} [!${body.object_attributes.id}](${body.object_attributes.url})`;
+        var embed_title = `${body.object_attributes.title}`
+        var embed_msg = `Merging branch ${body.object_attributes.source_branch} into ${body.object_attributes.target_branch}`
+
+        forwardData = {
+          content: content_str,
+          username: 'gitlab-bot',
+          avatar_url: `https://${host}/images/gitlab-logo.png`,
+          tts: false,
+          embeds: [
+            {
+              title: embed_title,
+              description: embed_msg,
+              type: 'rich'
+            }
+          ]
+        }
     } else {
         forwardData = {
             content: "gitlab sent a message!",
@@ -104,7 +122,7 @@ function transformData(type, host, body) {
             embeds: [
                 {
                     title: "Embedded Message",
-                    description: "Gitlab event",
+                    description: `Gitlab event: ${body.object_kind}`,
                     type: "rich",
                     footer: {
                         text: "footer text",
