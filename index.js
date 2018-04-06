@@ -41,7 +41,7 @@ app.get('/images/gitlab-logo.png', function(req, res) {
 });
 
 app.post('/webhook', function(req, res) {
-  if (/^(Push Hook|Tag Push Hook)$/.test(req.headers['x-gitlab-event']) === false) {
+  if (/^(Push Hook|Tag Push Hook|Merge Request Hook)$/.test(req.headers['x-gitlab-event']) === false) {
     console.log('Headers: ');
     console.log(req.headers);
     console.log('Body: ');
@@ -111,7 +111,7 @@ function transformData(type, host, body) {
         type: 'rich'
       }]
     }
-  } else if (type === 'Issues Hook') {
+  } else if (type === 'Issue Hook') {
     var content_str = `${body.user.username} ${body.object_attributes.state} [!${body.object_attributes.iid}](${body.object_attributes.url}) in [${body.project.name}](${body.project.web_url})`;
     var embed_title = `${body.object_attributes.title}`
     var embed_msg = `${body.object_attributes.description}`
