@@ -123,7 +123,7 @@ function transformData(type, host, body) {
       tts: false,
       embeds: [{
         title: embed_title,
-        description: embed_msg
+        description: embed_msg,
         type: 'rich'
       }]
     }
